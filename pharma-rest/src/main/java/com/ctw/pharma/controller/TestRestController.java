@@ -1,6 +1,7 @@
 package com.ctw.pharma.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,5 +12,10 @@ public class TestRestController {
     @GetMapping(value = "/hello")
     public String sayHello(){
         return "Hello Controller..";
+    }
+
+    @PostMapping(value = "/hello")
+    public String printMessage(){
+        return "Hello Controller.";
     }
 }
