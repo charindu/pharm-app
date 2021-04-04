@@ -1,0 +1,94 @@
+package com.ctw.pharma.model;
+
+import lombok.*;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+@Data
+@Builder
+@Entity
+@Table(name = "user")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "email")
+    @Email(message = "*Please provide a valid Email")
+    @NotEmpty(message = "*Can't be blank")
+    private String email;
+
+    @Column(name = "password")
+    @Length(min = 5, message = "*Your password must have at least 5 characters")
+    @NotEmpty(message = "*Can't be blank")
+    private String password;
+
+    @Transient
+    private String rePassword;
+
+    @Transient
+    private String newPassword;
+
+    @Column(name = "first_name")
+    @NotEmpty(message = "*Can't be blank")
+    private String firstName;
+
+    @Column(name = "last_name")
+    @NotEmpty(message = "*Can't be blank")
+    private String lastName;
+
+    @Column(name = "active")
+    private int active;
+
+    // This is set Integer rather than int, because the primitive datatype int isn't nullable.
+    // Ref. https://stackoverflow.com/questions/51697485/can-not-set-int-field-to-null-value
+    @Column(name = "mobile_number")
+    private Long mobileNumber;
+
+    @Column(name = "address")
+    private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
+
+    @ManyToOne
+    @JoinColumn(name = "province_id")
+    private Province province;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+    private Set<Role> roles;
+
+    @ManyToOne
+    @JoinColumn(name = "pharmacy_id")
+    private Pharmacy pharmacy;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PaymentMethod> paymentMethods;
+
+    /* @Transient
+    private String provinceId;*/
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserOrder> userOrders;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Alert> alerts;
+}
