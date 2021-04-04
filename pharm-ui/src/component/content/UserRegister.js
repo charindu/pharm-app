@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Alert from 'react-bootstrap/Alert';
 
 class UserRegister extends Component {
 
@@ -51,7 +52,7 @@ class UserRegister extends Component {
                     return Promise.reject(error);
                 }
 
-                this.setState({ user: data.user })
+                this.setState({ isSaved: data.isSuccess })
             })
             .catch(error => {
                 this.setState({ errorMessage: error.toString() });
@@ -61,8 +62,21 @@ class UserRegister extends Component {
 
     render() {
 
-        const {user} = this.state;
+        if(this.state.isSaved){
+            return (
+                <div className="content-wrapper">
+                    <section className="content">
+                        <div className="container-fluid">
+                            <Alert variant='success'>
+                                This is a success alert—check it out!
+                            </Alert>
+                        </div>
+                    </section>
+                </div>
+            )
+        }
 
+        const {user} = this.state;
         return (
             <div className="content-wrapper">
                 <section className="content">
@@ -128,7 +142,9 @@ class UserRegister extends Component {
                                             </div>
                                         </div>
                                         <div className="card-footer">
-                                            <button type="submit" className="btn btn-primary float-right">Submit</button>
+                                            <div className="col-12">
+                                                <button type="submit" className="btn btn-primary float-right">Register</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
