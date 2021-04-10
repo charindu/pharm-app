@@ -4,15 +4,15 @@ import Select from "react-select";
 class Configurations extends Component {
 
     roleObj = {
-        roleCode: '',
+        code: '',
         roleName: ''
     };
     provinceObj = {
-        provinceCode: '',
+        code: '',
         provinceName: ''
     };
     districtObj = {
-        districtCode: '',
+        code: '',
         districtName: ''
     };
 
@@ -21,10 +21,9 @@ class Configurations extends Component {
         this.state = {
             role: this.roleObj,
             province: this.provinceObj,
-            district: this.districtObj
+            district: this.districtObj,
+            isSaved: false
         };
-        //this.handleRoleChange = this.handleRoleChange.bind(this);
-        //this.handleProvinceChange = this.handleRoleChange.bind(this);
     }
 
     handleRoleChange = (event) => {
@@ -32,7 +31,7 @@ class Configurations extends Component {
         const value = target.value;
         const name = target.name;
         let role = {...this.state.role};
-        if (name == 'roleCode') {
+        if (name == 'code') {
             role[name] = value.toUpperCase();
         } else {
             role[name] = value;
@@ -45,7 +44,7 @@ class Configurations extends Component {
         const value = target.value;
         const name = target.name;
         let province = {...this.state.province};
-        if (name == 'provinceCode') {
+        if (name == 'code') {
             province[name] = value.toUpperCase();
         } else {
             province[name] = value;
@@ -58,12 +57,39 @@ class Configurations extends Component {
         const value = target.value;
         const name = target.name;
         let district = {...this.state.district};
-        if (name == 'districtCode') {
+        if (name == 'code') {
             district[name] = value.toUpperCase();
         } else {
             district[name] = value;
         }
         this.setState({district});
+    }
+
+    handleRoleSubmit = (event) => {
+        event.preventDefault();
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state.role)
+        };
+        fetch('/role/create', requestOptions)
+            .then(async response => {
+                const data = await response.json();
+
+                // check for error response
+                if (!response.ok) {
+                    // get error message from body or default to response status
+                    const error = (data && data.message) || response.status;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ isSaved: data.isSuccess })
+            })
+            .catch(error => {
+                this.setState({ errorMessage: error.toString() });
+                console.error('There was an error!', error);
+            });
     }
 
     render() {
@@ -97,8 +123,8 @@ class Configurations extends Component {
                                                         <label htmlFor="">Role Code</label>
                                                         <input type="text" className="form-control" maxLength={3}
                                                                id="inpRoleCode" placeholder="Role Code"
-                                                               name="roleCode" onChange={this.handleRoleChange}
-                                                               value={role.roleCode || ''}/>
+                                                               name="code" onChange={this.handleRoleChange}
+                                                               value={role.code || ''}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-sm-6">
@@ -114,7 +140,7 @@ class Configurations extends Component {
                                         </div>
                                         <div className="card-footer">
                                             <div className="col-12">
-                                                <button type="submit" className="btn btn-primary float-right">Submit
+                                                <button type="submit" className="btn btn-primary float-right" onClick={this.handleRoleSubmit}>Submit
                                                 </button>
                                             </div>
                                         </div>
@@ -142,8 +168,8 @@ class Configurations extends Component {
                                                         <label htmlFor="">Province Code</label>
                                                         <input type="text" className="form-control" maxLength={3}
                                                                id="inpProvCode" placeholder="Province/State Code"
-                                                               name="provinceCode" onChange={this.handleProvinceChange}
-                                                               value={province.provinceCode || ''}/>
+                                                               name="code" onChange={this.handleProvinceChange}
+                                                               value={province.code || ''}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-sm-6">
@@ -190,8 +216,8 @@ class Configurations extends Component {
                                                         <label htmlFor="">District Code</label>
                                                         <input type="text" className="form-control" maxLength={3}
                                                                id="inpDistCode" placeholder="District Code"
-                                                               name="districtCode" onChange={this.handleDistrictChange}
-                                                               value={district.districtCode || ''}/>
+                                                               name="code" onChange={this.handleDistrictChange}
+                                                               value={district.code || ''}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-sm-6">
