@@ -20,8 +20,11 @@ public class Role {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "role_name")
+    private String roleName;
 
     @ManyToMany( mappedBy = "roles")
     private Set<User> users;

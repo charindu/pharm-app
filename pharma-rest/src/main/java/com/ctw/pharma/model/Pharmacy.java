@@ -26,6 +26,14 @@ public class Pharmacy {
     @Column(name = "active", nullable = true)
     private boolean active;
 
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
+
+    @ManyToOne
+    @JoinColumn(name = "province_id")
+    private Province province;
+
     @OneToMany(mappedBy = "pharmacy")
     Set<PharmacyProduct> pharmacies;
 
@@ -35,16 +43,8 @@ public class Pharmacy {
     @OneToMany(mappedBy = "pharmacy", cascade = CascadeType.ALL)
     private List<UserOrder> userOrders;
 
-    @ManyToOne
-    @JoinColumn(name = "district_id")
-    private District district;
-
-    @ManyToOne
-    @JoinColumn(name = "province_id")
-    private Province province;
-
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "country_id")
-    private Country country;
+    private Country country;*/
 
 }

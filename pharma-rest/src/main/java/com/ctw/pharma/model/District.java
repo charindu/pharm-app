@@ -22,6 +22,10 @@ public class District {
     @Column(name = "id")
     private long id;
 
+    @Column(name = "code")
+    @NotEmpty(message = "*Can't be blank")
+    private String code;
+
     @Column(name = "district_name")
     @NotEmpty(message = "*Can't be blank")
     private String districtName;

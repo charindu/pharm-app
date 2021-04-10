@@ -68,9 +68,9 @@ public class User {
     @JoinColumn(name = "province_id")
     private Province province;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "country_id")
-    private Country country;
+    private Country country;*/
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
