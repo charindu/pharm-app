@@ -19,7 +19,7 @@ public class UserProfileController {
     @Autowired
     private UserService userService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping( value = "/create")
     public ResponseEntity<?> createUserProfile(@RequestBody User user){
