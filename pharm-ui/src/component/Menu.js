@@ -93,7 +93,15 @@ function Menu(props) {
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a href="pages/calendar.html" className="nav-link">
+                            <a href="/configurations" className="nav-link">
+                                <i className="nav-icon fas fa-tools" />
+                                <p>
+                                    Configurations
+                                </p>
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a href="#" className="nav-link">
                                 <i className="nav-icon fas fa-cogs" />
                                 <p>
                                     Settings
