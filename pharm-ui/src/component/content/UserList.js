@@ -15,7 +15,7 @@ class UserList extends Component {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         };
-        fetch('/user/userslisting', requestOptions)
+        fetch('/user/usersListing', requestOptions)
             .then(async response => {
                 const data = await response.json();
 

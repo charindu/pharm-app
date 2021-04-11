@@ -22,8 +22,48 @@ class Configurations extends Component {
             role: this.roleObj,
             province: this.provinceObj,
             district: this.districtObj,
+            provincesList: [],
             isSaved: false
         };
+    }
+
+    componentDidMount() {
+        console.log("componentDidMount > executing..")
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        };
+        fetch('/province/loadActiveProvinces', requestOptions)
+            .then(async response => {
+                const data = await response.json();
+
+                // check for error response
+                if (!response.ok) {
+                    // get error message from body or default to response status
+                    const error = (data && data.message) || response.status;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ provincesList: data.provincesList });
+                this.createProvinceOptions();
+            })
+            .catch(error => {
+                this.setState({ errorMessage: error.toString() });
+                console.error('There was an error!', error);
+            });
+    }
+
+    createProvinceOptions = () =>{
+        let provincesList = this.state.provincesList;
+        let provinces = [];
+
+        provincesList.map(function(item) {
+            provinces.push({
+                'value' : item.id,
+                'label'  : `${item.code}-${item.provinceName}`
+            })
+        });
+        this.setState({ provincesList: provinces });
     }
 
     handleRoleChange = (event) => {
@@ -74,6 +114,60 @@ class Configurations extends Component {
             body: JSON.stringify(this.state.role)
         };
         fetch('/role/create', requestOptions)
+            .then(async response => {
+                const data = await response.json();
+
+                // check for error response
+                if (!response.ok) {
+                    // get error message from body or default to response status
+                    const error = (data && data.message) || response.status;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ isSaved: data.isSuccess })
+            })
+            .catch(error => {
+                this.setState({ errorMessage: error.toString() });
+                console.error('There was an error!', error);
+            });
+    }
+
+    handleProvinceSubmit = (event) => {
+        event.preventDefault();
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state.province)
+        };
+        fetch('/province/create', requestOptions)
+            .then(async response => {
+                const data = await response.json();
+
+                // check for error response
+                if (!response.ok) {
+                    // get error message from body or default to response status
+                    const error = (data && data.message) || response.status;
+                    return Promise.reject(error);
+                }
+
+                this.setState({ isSaved: data.isSuccess })
+            })
+            .catch(error => {
+                this.setState({ errorMessage: error.toString() });
+                console.error('There was an error!', error);
+            });
+    }
+
+    handleDistrictSubmit = (event) => {
+        event.preventDefault();
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state.district)
+        };
+        fetch('/district/create', requestOptions)
             .then(async response => {
                 const data = await response.json();
 
@@ -185,7 +279,7 @@ class Configurations extends Component {
                                         </div>
                                         <div className="card-footer">
                                             <div className="col-12">
-                                                <button type="submit" className="btn btn-primary float-right">Submit
+                                                <button type="submit" className="btn btn-primary float-right" onClick={this.handleProvinceSubmit}>Submit
                                                 </button>
                                             </div>
                                         </div>
@@ -234,14 +328,14 @@ class Configurations extends Component {
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label>Province</label>
-                                                        <Select options={this.state.options} name="selProvince"/>
+                                                        <Select options={this.state.provincesList} name="selProvince"/>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="card-footer">
                                             <div className="col-12">
-                                                <button type="submit" className="btn btn-primary float-right">Submit
+                                                <button type="submit" className="btn btn-primary float-right" onClick={this.handleDistrictSubmit}>Submit
                                                 </button>
                                             </div>
                                         </div>
