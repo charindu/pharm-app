@@ -31,7 +31,7 @@ public class UserProfileController {
         return ResponseEntity.ok(map);
     }
 
-    @GetMapping( value = "/userslisting")
+    @GetMapping( value = "/usersListing")
     public ResponseEntity<?> listingAllActiveUsers(){
         LOGGER.info("UserProfileController:listingAllActiveUsers");
         Map<String, Object> map = new HashMap<>();
