@@ -1,8 +1,10 @@
 package com.ctw.pharma.controller;
 
 import com.ctw.pharma.model.District;
+import com.ctw.pharma.model.Province;
 import com.ctw.pharma.model.Role;
 import com.ctw.pharma.service.DistrictService;
+import com.ctw.pharma.service.ProvinceService;
 import com.ctw.pharma.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,30 +17,31 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/district")
-public class DistrictController {
+@RequestMapping(value = "/configurations")
+public class ConfigurationsController {
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private ProvinceService provinceService;
 
     @Autowired
     private DistrictService districtService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    @PostMapping( value = "/create")
-    public ResponseEntity<?> createDistrict(@RequestBody District district){
-        LOGGER.info("DistrictController :create: " + district);
-        Map<String, Object> map = new HashMap<>();
-        district = districtService.createDistrict(district);
-        map.put("district", district);
-        map.put("isSuccess", true);
-        return ResponseEntity.ok(map);
-    }
-
     @GetMapping( value = "/loadAll")
-    public ResponseEntity<?> loadAllDistricts(){
-        LOGGER.info("DistrictController :loadAllDistricts: ");
+    public ResponseEntity<?> loadAllConfigurations(){
+        LOGGER.info("ConfigurationsController:loadAllConfigurations:");
         Map<String, Object> map = new HashMap<>();
-        List<District> districts = districtService.loadAllDistricts();
-        map.put("districts", districts);
+        List<Role> rolesList = roleService.loadAllRoles();
+        List<Province> provincesList = provinceService.loadAllProvinces();
+        List<District> districtsList = districtService.loadAllDistricts();
+
+        map.put("rolesList", rolesList);
+        map.put("provincesList", provincesList);
+        map.put("districtsList", districtsList);
         map.put("isSuccess", true);
         return ResponseEntity.ok(map);
     }

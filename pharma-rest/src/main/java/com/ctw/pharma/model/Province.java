@@ -1,12 +1,13 @@
 package com.ctw.pharma.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+//@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +32,7 @@ public class Province {
     @JoinColumn
     private Country country;*/
 
+    @JsonIgnore
     @OneToMany(mappedBy = "province", cascade = CascadeType.ALL)
     private List<District> districts;
 

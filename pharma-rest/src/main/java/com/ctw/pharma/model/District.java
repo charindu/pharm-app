@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-@Data
+//@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
