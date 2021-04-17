@@ -39,13 +39,13 @@ function Menu(props) {
                             </a>
                             <ul className="nav nav-treeview">
                                 <li className="nav-item">
-                                    <a href="/userreg" className="nav-link">
+                                    <a href="/userReg" className="nav-link">
                                         <i className="fas fa-user-plus nav-icon"></i>
                                         <p>Register</p>
                                     </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a href="/userlist" className="nav-link">
+                                    <a href="/userList" className="nav-link">
                                         <i className="fas fa-list nav-icon"></i>
                                         <p>Listing</p>
                                     </a>
@@ -93,12 +93,27 @@ function Menu(props) {
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a href="/configurations" className="nav-link">
-                                <i className="nav-icon fas fa-tools" />
+                            <a href="#" className="nav-link">
+                                <i className="nav-icon fas fa-tools"></i>
                                 <p>
                                     Configurations
+                                    <i className="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <ul className="nav nav-treeview">
+                                <li className="nav-item">
+                                    <a href="/configurations" className="nav-link">
+                                        <i className="far fa-plus-square nav-icon"></i>
+                                        <p>Add</p>
+                                    </a>
+                                </li>
+                                <li className="nav-item">
+                                    <a href="/configurationsListing" className="nav-link">
+                                        <i className="fas fa-list nav-icon"></i>
+                                        <p>Listing</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li className="nav-item">
                             <a href="#" className="nav-link">

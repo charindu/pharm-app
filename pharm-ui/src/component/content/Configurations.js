@@ -13,7 +13,10 @@ class Configurations extends Component {
     };
     districtObj = {
         code: '',
-        districtName: ''
+        districtName: '',
+        province:{
+            id:''
+        }
     };
 
     constructor(props) {
@@ -102,6 +105,13 @@ class Configurations extends Component {
         } else {
             district[name] = value;
         }
+        this.setState({district});
+    }
+
+    handleDistrictProvinceSelectionChange = (selectedOption) => {
+        console.log(`Option selected:`, selectedOption);
+        let district = {...this.state.district};
+        district.province.id = selectedOption.value;
         this.setState({district});
     }
 
@@ -328,7 +338,8 @@ class Configurations extends Component {
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label>Province</label>
-                                                        <Select options={this.state.provincesList} name="selProvince"/>
+                                                        <Select options={this.state.provincesList}
+                                                                onChange={this.handleDistrictProvinceSelectionChange} /*value={district.province.id || ''}*/ />
                                                     </div>
                                                 </div>
                                             </div>

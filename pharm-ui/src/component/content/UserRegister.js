@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Alert from 'react-bootstrap/Alert';
+import {ToastProvider, useToasts} from 'react-toast-notifications'
+import ToastMessage from "../common/ToastMessage";
 
 class UserRegister extends Component {
 
@@ -62,7 +64,7 @@ class UserRegister extends Component {
 
     render() {
 
-        if(this.state.isSaved){
+        /*if(this.state.isSaved){
             return (
                 <div className="content-wrapper">
                     <section className="content">
@@ -74,7 +76,7 @@ class UserRegister extends Component {
                     </section>
                 </div>
             )
-        }
+        }*/
 
         const {user} = this.state;
         return (

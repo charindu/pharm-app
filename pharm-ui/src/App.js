@@ -7,6 +7,7 @@ import Content from "./component/Content";
 import UserRegister from "./component/content/UserRegister";
 import UserList from "./component/content/UserList";
 import Configurations from "./component/content/Configurations";
+import ConfigurationsListing from "./component/content/ConfigurationsListing";
 
 function App () {
     return(
@@ -20,6 +21,7 @@ function App () {
                     <Route path='/userlist' exact={true} component={UserList}/>
                     <Route path='/dashboard' exact={true} component={Content}/>
                     <Route path='/configurations' exact={true} component={Configurations}/>
+                    <Route path='/configurationsListing' exact={true} component={ConfigurationsListing}/>
                 </Switch>
             </Router>
             <Footer/>
