@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Alert from 'react-bootstrap/Alert';
 import {ToastProvider, useToasts} from 'react-toast-notifications'
 import ToastMessage from "../common/ToastMessage";
+import axios from "axios";
 
 class UserRegister extends Component {
 
@@ -43,23 +44,15 @@ class UserRegister extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state.user)
         };
-        fetch('/user/create', requestOptions)
-            .then(async response => {
-                const data = await response.json();
 
-                // check for error response
-                if (!response.ok) {
-                    // get error message from body or default to response status
-                    const error = (data && data.message) || response.status;
-                    return Promise.reject(error);
-                }
-
-                this.setState({ isSaved: data.isSuccess })
-            })
-            .catch(error => {
-                this.setState({ errorMessage: error.toString() });
-                console.error('There was an error!', error);
-            });
+        axios.post('/user/create', JSON.stringify(this.state.user),{headers: { 'Content-Type': 'application/json' } })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({ isSaved: res.data.isSuccess })
+            }).catch( err =>{
+            console.error('There was an error!', err);
+        })
     }
 
     render() {

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from "axios";
 
 class ConfigurationsListing extends Component {
 
@@ -18,7 +19,7 @@ class ConfigurationsListing extends Component {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         };
-        fetch('/configurations/loadAll', requestOptions)
+        /*fetch('/configurations/loadAll', requestOptions)
             .then(async response => {
                 const data = await response.json();
 
@@ -35,6 +36,15 @@ class ConfigurationsListing extends Component {
                 this.setState({ errorMessage: error.toString() });
                 console.error('There was an error!', error);
             });
+*/
+        axios.get('/configurations/loadAll', {headers: { 'Content-Type': 'application/json' } })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({ roles: res.data.rolesList, provinces: res.data.provincesList, districts: res.data.districtsList, isSaved:res.data.isSuccess })
+            }).catch( err =>{
+            console.error('There was an error!', err);
+        })
     }
 
     render() {
@@ -85,6 +95,7 @@ class ConfigurationsListing extends Component {
                                                     <tr>
                                                         <th>Code</th>
                                                         <th>Name</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -92,6 +103,22 @@ class ConfigurationsListing extends Component {
                                                         <tr>
                                                             <td>{role.code}</td>
                                                             <td>{role.roleName}</td>
+                                                            <td>
+                                                                <div className="row">
+                                                                    <div className="col-1 col-sm-1">
+                                                                        <button type="button"
+                                                                                className="btn btn-outline-success btn-flat">
+                                                                            <i className="far fa-edit"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="col-1 col-sm-1">
+                                                                        <button type="button"
+                                                                                className="btn btn-outline-danger btn-flat">
+                                                                            <i className="far fa-trash-alt"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                     ))}
                                                     </tbody>
@@ -104,6 +131,7 @@ class ConfigurationsListing extends Component {
                                                     <tr>
                                                         <th>Code</th>
                                                         <th>Name</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -111,6 +139,7 @@ class ConfigurationsListing extends Component {
                                                         <tr>
                                                             <td>{province.code}</td>
                                                             <td>{province.provinceName}</td>
+                                                            <td>ac</td>
                                                         </tr>
                                                     ))}
                                                     </tbody>
@@ -124,6 +153,7 @@ class ConfigurationsListing extends Component {
                                                         <th>Code</th>
                                                         <th>Name</th>
                                                         <th>Province</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -132,6 +162,7 @@ class ConfigurationsListing extends Component {
                                                             <td>{district.code}</td>
                                                             <td>{district.districtName}</td>
                                                             <td>{district.province.provinceName}</td>
+                                                            <td>action</td>
                                                         </tr>
                                                     ))}
                                                     </tbody>
