@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +27,15 @@ public class RoleController {
         role = roleService.createRole(role);
         map.put("role", role);
         map.put("isSuccess", true);
+        return ResponseEntity.ok(map);
+    }
+
+    @DeleteMapping( value = "/delete/{roleId}")
+    public ResponseEntity<?> deleteRoleById(@PathVariable("roleId") long roleId){
+        LOGGER.info("RoleController :delete: " + roleId);
+        Map<String, Object> map = new HashMap<>();
+        boolean isDeleted = roleService.deleteRoleById(roleId);
+        map.put("isDeleted", isDeleted);
         return ResponseEntity.ok(map);
     }
 }

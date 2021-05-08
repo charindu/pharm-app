@@ -28,4 +28,10 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> loadAllRoles() {
         return roleRepository.findAll();
     }
+
+    @Override
+    public boolean deleteRoleById(long roleId) {
+        roleRepository.deleteById(roleId);
+        return true;
+    }
 }
