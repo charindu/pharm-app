@@ -134,7 +134,7 @@ class Configurations extends Component {
                     return Promise.reject(error);
                 }
 
-                this.setState({ isSaved: data.isSuccess })
+                this.setState({ isSaved: data.isSuccess });
             })
             .catch(error => {
                 this.setState({ errorMessage: error.toString() });

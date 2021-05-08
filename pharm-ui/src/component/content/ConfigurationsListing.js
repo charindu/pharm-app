@@ -9,34 +9,16 @@ class ConfigurationsListing extends Component {
             roles: [],
             provinces: [],
             districts: [],
-            isSaved:false
+            isSaved:false,
+            deletionRoleId:''
         };
     }
 
     componentDidMount() {
-        console.log("componentDidMount > executing..")
-        const requestOptions = {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        };
-        /*fetch('/configurations/loadAll', requestOptions)
-            .then(async response => {
-                const data = await response.json();
+        this.refreshConfigs();
+    }
 
-                // check for error response
-                if (!response.ok) {
-                    // get error message from body or default to response status
-                    const error = (data && data.message) || response.status;
-                    return Promise.reject(error);
-                }
-
-                this.setState({ roles: data.rolesList, provinces: data.provincesList, districts: data.districtsList, isSaved:data.isSuccess })
-            })
-            .catch(error => {
-                this.setState({ errorMessage: error.toString() });
-                console.error('There was an error!', error);
-            });
-*/
+    refreshConfigs = () =>{
         axios.get('/configurations/loadAll', {headers: { 'Content-Type': 'application/json' } })
             .then(res => {
                 console.log(res);
@@ -45,6 +27,28 @@ class ConfigurationsListing extends Component {
             }).catch( err =>{
             console.error('There was an error!', err);
         })
+    }
+
+    setDeletionRoleId(roleId) {
+        console.log("deleteRole > executing.." + roleId);
+        this.setState({deletionRoleId: roleId})
+    }
+
+    deleteRole = (event) => {
+        event.preventDefault();
+        console.log( "deleteRole > executing..");
+
+        axios.delete('/role/delete/'+this.state.deletionRoleId,{headers: { 'Content-Type': 'application/json' } })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({ deletionRoleId: '', isSaved: res.data.isDeleted });
+                if(this.state.isSaved){
+                    this.refreshConfigs();
+                }
+            }).catch( err =>{
+            console.error('There was an error!', err);
+        });
     }
 
     render() {
@@ -107,13 +111,17 @@ class ConfigurationsListing extends Component {
                                                                 <div className="row">
                                                                     <div className="col-1 col-sm-1">
                                                                         <button type="button"
-                                                                                className="btn btn-outline-success btn-flat">
+                                                                                className="btn btn-outline-success btn-flat"
+                                                                                data-toggle="modal"
+                                                                                data-target="#modal-edit-role" >
                                                                             <i className="far fa-edit"></i>
                                                                         </button>
                                                                     </div>
                                                                     <div className="col-1 col-sm-1">
                                                                         <button type="button"
-                                                                                className="btn btn-outline-danger btn-flat">
+                                                                                className="btn btn-outline-danger btn-flat"
+                                                                                data-toggle="modal"
+                                                                                data-target="#modal-delete-role" onClick={() => this.setDeletionRoleId(role.id)}>
                                                                             <i className="far fa-trash-alt"></i>
                                                                         </button>
                                                                     </div>
@@ -184,6 +192,42 @@ class ConfigurationsListing extends Component {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div className="modal fade" id="modal-edit-role">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h4 className="modal-title">Edit Role</h4>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <p>One fine body&hellip;</p>
+                                </div>
+                                <div className="modal-footer justify-content-between">
+                                    <button type="button" className="btn btn-default" data-dismiss="modal">Close
+                                    </button>
+                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal fade" id="modal-delete-role">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-body">
+                                    <p>Are you sure, you want to delete this role?</p>
+                                </div>
+                                <div className="modal-footer justify-content-between">
+                                    <button type="button" className="btn btn-default" data-dismiss="modal">Close
+                                    </button>
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.deleteRole}>Delete</button>
                                 </div>
                             </div>
                         </div>
